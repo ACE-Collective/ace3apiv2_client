@@ -163,7 +163,9 @@ class ObservableDetectionRead:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.observable_comment_summary import ObservableCommentSummary
+        from ..models.observable_comment_summary import (
+            ObservableCommentSummary,
+        )
 
         d = dict(src_dict)
         id = d.pop("id")

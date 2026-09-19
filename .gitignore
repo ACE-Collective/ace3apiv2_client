@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# scratch dir used by scripts/regenerate.sh for the generator virtualenv
+.regen/

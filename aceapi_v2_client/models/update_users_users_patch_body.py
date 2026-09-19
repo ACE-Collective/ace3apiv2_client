@@ -16,8 +16,6 @@ T = TypeVar("T", bound="UpdateUsersUsersPatchBody")
 
 @_attrs_define
 class UpdateUsersUsersPatchBody:
-    """ """
-
     additional_properties: dict[str, UserUpdate] = _attrs_field(
         init=False, factory=dict
     )

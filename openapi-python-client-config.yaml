@@ -4,4 +4,12 @@
 package_name_override: aceapi_v2_client
 project_name_override: aceapi-v2-client
 # keep generated package metadata in sync with the hand-authored pyproject.toml
-package_version_override: 2.1.0
+package_version_override: 2.2.0
+
+# the api serves two endpoints (/alerts/{uuid}/download and /crashes/{id}/download)
+# as application/zip. the generator only understands application/json,
+# application/octet-stream and text/*; anything else makes it drop the success
+# response entirely, leaving sync() returning None on a perfectly good download.
+# mapping zip onto octet-stream makes those operations return the raw bytes.
+content_type_overrides:
+  application/zip: application/octet-stream

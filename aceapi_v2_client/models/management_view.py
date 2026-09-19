@@ -80,7 +80,9 @@ class ManagementView:
         from ..models.management_view_group_permissions import (
             ManagementViewGroupPermissions,
         )
-        from ..models.management_view_permissions import ManagementViewPermissions
+        from ..models.management_view_permissions import (
+            ManagementViewPermissions,
+        )
         from ..models.user_read import UserRead
 
         d = dict(src_dict)

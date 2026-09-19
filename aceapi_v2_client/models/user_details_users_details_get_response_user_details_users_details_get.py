@@ -16,8 +16,6 @@ T = TypeVar("T", bound="UserDetailsUsersDetailsGetResponseUserDetailsUsersDetail
 
 @_attrs_define
 class UserDetailsUsersDetailsGetResponseUserDetailsUsersDetailsGet:
-    """ """
-
     additional_properties: dict[str, UserDetail] = _attrs_field(
         init=False, factory=dict
     )

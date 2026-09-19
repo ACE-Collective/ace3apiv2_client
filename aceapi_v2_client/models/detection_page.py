@@ -63,7 +63,9 @@ class DetectionPage:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.observable_detection_read import ObservableDetectionRead
+        from ..models.observable_detection_read import (
+            ObservableDetectionRead,
+        )
 
         d = dict(src_dict)
         items = []

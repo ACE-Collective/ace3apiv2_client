@@ -16,8 +16,6 @@ T = TypeVar("T", bound="ManagementViewPermissions")
 
 @_attrs_define
 class ManagementViewPermissions:
-    """ """
-
     additional_properties: dict[str, list[PermissionRead]] = _attrs_field(
         init=False, factory=dict
     )

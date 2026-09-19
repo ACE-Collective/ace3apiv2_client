@@ -42,7 +42,9 @@ class ListResponseNamedDescriptionRead:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.named_description_read import NamedDescriptionRead
+        from ..models.named_description_read import (
+            NamedDescriptionRead,
+        )
 
         d = dict(src_dict)
         data = []

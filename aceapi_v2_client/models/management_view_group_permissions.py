@@ -16,8 +16,6 @@ T = TypeVar("T", bound="ManagementViewGroupPermissions")
 
 @_attrs_define
 class ManagementViewGroupPermissions:
-    """ """
-
     additional_properties: dict[str, list[GroupPermissionRead]] = _attrs_field(
         init=False, factory=dict
     )

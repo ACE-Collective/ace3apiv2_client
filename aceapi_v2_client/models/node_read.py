@@ -26,6 +26,7 @@ class NodeRead:
         location (str):
         company_id (int):
         status (str):
+        expected_state (str):
         last_update (datetime.datetime):
         is_primary (bool):
         any_mode (bool):
@@ -39,6 +40,7 @@ class NodeRead:
     location: str
     company_id: int
     status: str
+    expected_state: str
     last_update: datetime.datetime
     is_primary: bool
     any_mode: bool
@@ -57,6 +59,8 @@ class NodeRead:
         company_id = self.company_id
 
         status = self.status
+
+        expected_state = self.expected_state
 
         last_update = self.last_update.isoformat()
 
@@ -84,6 +88,7 @@ class NodeRead:
                 "location": location,
                 "company_id": company_id,
                 "status": status,
+                "expected_state": expected_state,
                 "last_update": last_update,
                 "is_primary": is_primary,
                 "any_mode": any_mode,
@@ -111,6 +116,8 @@ class NodeRead:
 
         status = d.pop("status")
 
+        expected_state = d.pop("expected_state")
+
         last_update = datetime.datetime.fromisoformat(d.pop("last_update"))
 
         is_primary = d.pop("is_primary")
@@ -136,6 +143,7 @@ class NodeRead:
             location=location,
             company_id=company_id,
             status=status,
+            expected_state=expected_state,
             last_update=last_update,
             is_primary=is_primary,
             any_mode=any_mode,

@@ -42,7 +42,9 @@ class ListResponseObservableCommentRead:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.observable_comment_read import ObservableCommentRead
+        from ..models.observable_comment_read import (
+            ObservableCommentRead,
+        )
 
         d = dict(src_dict)
         data = []

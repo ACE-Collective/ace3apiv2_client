@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any
+from typing import Any, cast
 from urllib.parse import quote
 
 import httpx
@@ -26,9 +26,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | HTTPValidationError | None:
+) -> HTTPValidationError | str | None:
     if response.status_code == 200:
-        response_200 = response.json()
+        response_200 = cast(str, response.content)
         return response_200
 
     if response.status_code == 422:
@@ -44,7 +44,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | HTTPValidationError]:
+) -> Response[HTTPValidationError | str]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -57,7 +57,7 @@ def sync_detailed(
     alert_uuid: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | HTTPValidationError]:
+) -> Response[HTTPValidationError | str]:
     """Download Alert
 
      Download the full alert storage directory as a zip encrypted with password 'infected'.
@@ -70,7 +70,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | HTTPValidationError]
+        Response[HTTPValidationError | str]
     """
 
     kwargs = _get_kwargs(
@@ -88,7 +88,7 @@ def sync(
     alert_uuid: str,
     *,
     client: AuthenticatedClient,
-) -> Any | HTTPValidationError | None:
+) -> HTTPValidationError | str | None:
     """Download Alert
 
      Download the full alert storage directory as a zip encrypted with password 'infected'.
@@ -101,7 +101,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | HTTPValidationError
+        HTTPValidationError | str
     """
 
     return sync_detailed(
@@ -114,7 +114,7 @@ async def asyncio_detailed(
     alert_uuid: str,
     *,
     client: AuthenticatedClient,
-) -> Response[Any | HTTPValidationError]:
+) -> Response[HTTPValidationError | str]:
     """Download Alert
 
      Download the full alert storage directory as a zip encrypted with password 'infected'.
@@ -127,7 +127,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | HTTPValidationError]
+        Response[HTTPValidationError | str]
     """
 
     kwargs = _get_kwargs(
@@ -143,7 +143,7 @@ async def asyncio(
     alert_uuid: str,
     *,
     client: AuthenticatedClient,
-) -> Any | HTTPValidationError | None:
+) -> HTTPValidationError | str | None:
     """Download Alert
 
      Download the full alert storage directory as a zip encrypted with password 'infected'.
@@ -156,7 +156,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | HTTPValidationError
+        HTTPValidationError | str
     """
 
     return (

@@ -33,6 +33,8 @@ class SearchFiltersBody:
             exclude_alert_uuids (list[str] | Unset):
             observables (list[LookupPair] | Unset): only alerts carrying ALL of these observables; the value is normalized
                 the same way the analysis engine normalizes it, and a file observable's value is its content sha256 hex digest
+            detection_points (list[str] | Unset): only alerts with a detection point from ANY of these signatures, each
+                written <signature uuid>[:<signature version>]; without a version any version matches
             filters (list[FilterEntry] | Unset): the rest of the alert management filter vocabulary, in the same {name,
                 inverted, values} shape the GUI and share links use -- e.g. {"name": "Owner", "inverted": true, "values":
                 ["None"]}
@@ -46,6 +48,7 @@ class SearchFiltersBody:
     tags: list[str] | Unset = UNSET
     exclude_alert_uuids: list[str] | Unset = UNSET
     observables: list[LookupPair] | Unset = UNSET
+    detection_points: list[str] | Unset = UNSET
     filters: list[FilterEntry] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -93,6 +96,10 @@ class SearchFiltersBody:
                 observables_item = observables_item_data.to_dict()
                 observables.append(observables_item)
 
+        detection_points: list[str] | Unset = UNSET
+        if not isinstance(self.detection_points, Unset):
+            detection_points = self.detection_points
+
         filters: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.filters, Unset):
             filters = []
@@ -119,6 +126,8 @@ class SearchFiltersBody:
             field_dict["exclude_alert_uuids"] = exclude_alert_uuids
         if observables is not UNSET:
             field_dict["observables"] = observables
+        if detection_points is not UNSET:
+            field_dict["detection_points"] = detection_points
         if filters is not UNSET:
             field_dict["filters"] = filters
 
@@ -184,6 +193,8 @@ class SearchFiltersBody:
 
                 observables.append(observables_item)
 
+        detection_points = cast(list[str], d.pop("detection_points", UNSET))
+
         _filters = d.pop("filters", UNSET)
         filters: list[FilterEntry] | Unset = UNSET
         if _filters is not UNSET:
@@ -202,6 +213,7 @@ class SearchFiltersBody:
             tags=tags,
             exclude_alert_uuids=exclude_alert_uuids,
             observables=observables,
+            detection_points=detection_points,
             filters=filters,
         )
 

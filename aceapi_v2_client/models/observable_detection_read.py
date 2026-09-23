@@ -29,6 +29,7 @@ class ObservableDetectionRead:
             type_ (str):
             value (str):
             expires_on (datetime.datetime | None | Unset):
+            expired (bool | Unset):  Default: False.
             detection_context (None | str | Unset):
             batch_id (None | str | Unset):
             created_by (None | str | Unset):
@@ -44,6 +45,7 @@ class ObservableDetectionRead:
     type_: str
     value: str
     expires_on: datetime.datetime | None | Unset = UNSET
+    expired: bool | Unset = False
     detection_context: None | str | Unset = UNSET
     batch_id: None | str | Unset = UNSET
     created_by: None | str | Unset = UNSET
@@ -69,6 +71,8 @@ class ObservableDetectionRead:
             expires_on = self.expires_on.isoformat()
         else:
             expires_on = self.expires_on
+
+        expired = self.expired
 
         detection_context: None | str | Unset
         if isinstance(self.detection_context, Unset):
@@ -140,6 +144,8 @@ class ObservableDetectionRead:
         )
         if expires_on is not UNSET:
             field_dict["expires_on"] = expires_on
+        if expired is not UNSET:
+            field_dict["expired"] = expired
         if detection_context is not UNSET:
             field_dict["detection_context"] = detection_context
         if batch_id is not UNSET:
@@ -190,6 +196,8 @@ class ObservableDetectionRead:
             return cast(datetime.datetime | None | Unset, data)
 
         expires_on = _parse_expires_on(d.pop("expires_on", UNSET))
+
+        expired = d.pop("expired", UNSET)
 
         def _parse_detection_context(data: object) -> None | str | Unset:
             if data is None:
@@ -293,6 +301,7 @@ class ObservableDetectionRead:
             type_=type_,
             value=value,
             expires_on=expires_on,
+            expired=expired,
             detection_context=detection_context,
             batch_id=batch_id,
             created_by=created_by,

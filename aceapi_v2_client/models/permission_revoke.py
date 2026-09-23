@@ -4,7 +4,6 @@ from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
-from attrs import field as _attrs_field
 from typing_extensions import Self
 
 from ..types import UNSET, Unset
@@ -14,62 +13,48 @@ T = TypeVar("T", bound="PermissionRevoke")
 
 @_attrs_define
 class PermissionRevoke:
-    """
-    Attributes:
-        users (list[int] | Unset):
-        groups (list[int] | Unset):
+    """The permission ROWS to delete, by auth_user_permission / auth_group_permission id.
+
+    These are not user ids and not group ids. PermissionGrant uses `users` and `groups` for those.
+    extra="forbid" rejects unknown field names.
+
+        Attributes:
+            user_permission_ids (list[int] | Unset):
+            group_permission_ids (list[int] | Unset):
     """
 
-    users: list[int] | Unset = UNSET
-    groups: list[int] | Unset = UNSET
-    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+    user_permission_ids: list[int] | Unset = UNSET
+    group_permission_ids: list[int] | Unset = UNSET
 
     def to_dict(self) -> dict[str, Any]:
-        users: list[int] | Unset = UNSET
-        if not isinstance(self.users, Unset):
-            users = self.users
+        user_permission_ids: list[int] | Unset = UNSET
+        if not isinstance(self.user_permission_ids, Unset):
+            user_permission_ids = self.user_permission_ids
 
-        groups: list[int] | Unset = UNSET
-        if not isinstance(self.groups, Unset):
-            groups = self.groups
+        group_permission_ids: list[int] | Unset = UNSET
+        if not isinstance(self.group_permission_ids, Unset):
+            group_permission_ids = self.group_permission_ids
 
         field_dict: dict[str, Any] = {}
-        field_dict.update(self.additional_properties)
+
         field_dict.update({})
-        if users is not UNSET:
-            field_dict["users"] = users
-        if groups is not UNSET:
-            field_dict["groups"] = groups
+        if user_permission_ids is not UNSET:
+            field_dict["user_permission_ids"] = user_permission_ids
+        if group_permission_ids is not UNSET:
+            field_dict["group_permission_ids"] = group_permission_ids
 
         return field_dict
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
-        users = cast(list[int], d.pop("users", UNSET))
+        user_permission_ids = cast(list[int], d.pop("user_permission_ids", UNSET))
 
-        groups = cast(list[int], d.pop("groups", UNSET))
+        group_permission_ids = cast(list[int], d.pop("group_permission_ids", UNSET))
 
         permission_revoke = cls(
-            users=users,
-            groups=groups,
+            user_permission_ids=user_permission_ids,
+            group_permission_ids=group_permission_ids,
         )
 
-        permission_revoke.additional_properties = d
         return permission_revoke
-
-    @property
-    def additional_keys(self) -> list[str]:
-        return list(self.additional_properties.keys())
-
-    def __getitem__(self, key: str) -> Any:
-        return self.additional_properties[key]
-
-    def __setitem__(self, key: str, value: Any) -> None:
-        self.additional_properties[key] = value
-
-    def __delitem__(self, key: str) -> None:
-        del self.additional_properties[key]
-
-    def __contains__(self, key: str) -> bool:
-        return key in self.additional_properties

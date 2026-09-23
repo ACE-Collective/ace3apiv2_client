@@ -30,9 +30,9 @@ class AlertSearchRequest:
             query (None | str | Unset): free text for the semantic lanes, plus any number of `field:value` terms. A term is
                 `tag:phish`, `uuid:<alert uuid>`, `<observable type>:<value>` (e.g. `ipv4:1.2.3.4`, `signature_id:<uuid>`),
                 `observable:<type>:<value>` for values containing colons, or a filter slug such as `queue:default`,
-                `disposition:DELIVERY` or `alert_date:-7d`. Prefix with `-` to invert, quote a value containing a space or
-                comma, separate ORed values with commas. An unrecognized prefix is ordinary text. A bare word or indicator is
-                searched semantically only -- it never runs an exact lookup.
+                `disposition:DELIVERY`, `alert_date:-7d` or `detection_point:<signature uuid>[:<version>]`. Prefix with `-` to
+                invert, quote a value containing a space or comma, separate ORed values with commas. An unrecognized prefix is
+                ordinary text. A bare word or indicator is searched semantically only -- it never runs an exact lookup.
             filters (SearchFiltersBody | Unset): Filters applied before ranking. Lists match any of their values; the
                 filters themselves
                 are ANDed together.

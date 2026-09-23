@@ -81,8 +81,18 @@ def sync_detailed(
 ]:
     """Delete Permission
 
+     Delete permission ROWS by their auth_user_permission / auth_group_permission ids.
+
+    Not by user or group id -- see PermissionRevoke. Nothing is deleted unless every id names a
+    real row.
+
     Args:
-        body (PermissionRevoke):
+        body (PermissionRevoke): The permission ROWS to delete, by auth_user_permission /
+            auth_group_permission id.
+
+            These are not user ids and not group ids. PermissionGrant uses `users` and `groups` for
+            those.
+            extra="forbid" rejects unknown field names.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -114,8 +124,18 @@ def sync(
 ):
     """Delete Permission
 
+     Delete permission ROWS by their auth_user_permission / auth_group_permission ids.
+
+    Not by user or group id -- see PermissionRevoke. Nothing is deleted unless every id names a
+    real row.
+
     Args:
-        body (PermissionRevoke):
+        body (PermissionRevoke): The permission ROWS to delete, by auth_user_permission /
+            auth_group_permission id.
+
+            These are not user ids and not group ids. PermissionGrant uses `users` and `groups` for
+            those.
+            extra="forbid" rejects unknown field names.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,8 +161,18 @@ async def asyncio_detailed(
 ]:
     """Delete Permission
 
+     Delete permission ROWS by their auth_user_permission / auth_group_permission ids.
+
+    Not by user or group id -- see PermissionRevoke. Nothing is deleted unless every id names a
+    real row.
+
     Args:
-        body (PermissionRevoke):
+        body (PermissionRevoke): The permission ROWS to delete, by auth_user_permission /
+            auth_group_permission id.
+
+            These are not user ids and not group ids. PermissionGrant uses `users` and `groups` for
+            those.
+            extra="forbid" rejects unknown field names.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -172,8 +202,18 @@ async def asyncio(
 ):
     """Delete Permission
 
+     Delete permission ROWS by their auth_user_permission / auth_group_permission ids.
+
+    Not by user or group id -- see PermissionRevoke. Nothing is deleted unless every id names a
+    real row.
+
     Args:
-        body (PermissionRevoke):
+        body (PermissionRevoke): The permission ROWS to delete, by auth_user_permission /
+            auth_group_permission id.
+
+            These are not user ids and not group ids. PermissionGrant uses `users` and `groups` for
+            those.
+            extra="forbid" rejects unknown field names.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

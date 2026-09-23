@@ -81,8 +81,11 @@ for result in results.results:
 ```
 
 Terms may be inverted with a leading `-`, ORed by separating values with commas,
-and quoted when a value contains a space. `POST /search/similar` takes an alert
-UUID instead and returns the alerts nearest to it.
+and quoted when a value contains a space. `detection_point:<signature uuid>[:<version>]`
+narrows to alerts with a detection point from that signature; the same filter is
+available structurally as `SearchFiltersBody(detection_points=[...])`.
+`POST /search/similar` takes an alert UUID instead and returns the alerts nearest
+to it.
 
 ### Async usage
 

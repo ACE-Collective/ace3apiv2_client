@@ -40,6 +40,7 @@ from .delete_secret_secrets_key_delete_response_delete_secret_secrets_key_delete
 )
 from .detection_create import DetectionCreate
 from .detection_page import DetectionPage
+from .detection_status import DetectionStatus
 from .event_membership import EventMembership
 from .event_read import EventRead
 from .expiration_update import ExpirationUpdate
@@ -165,6 +166,7 @@ __all__ = (
     "DeleteSecretSecretsKeyDeleteResponseDeleteSecretSecretsKeyDelete",
     "DetectionCreate",
     "DetectionPage",
+    "DetectionStatus",
     "EventMembership",
     "EventRead",
     "ExpirationUpdate",

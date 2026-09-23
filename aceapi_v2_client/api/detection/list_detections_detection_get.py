@@ -6,6 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.detection_page import DetectionPage
+from ...models.detection_status import DetectionStatus
 from ...models.http_validation_error import HTTPValidationError
 from ...types import UNSET, Response, Unset
 
@@ -14,6 +15,7 @@ def _get_kwargs(
     *,
     search: None | str | Unset = UNSET,
     observable_type: None | str | Unset = UNSET,
+    status: DetectionStatus | Unset = UNSET,
     page: int | Unset = 1,
     page_size: int | Unset = 50,
 ) -> dict[str, Any]:
@@ -33,6 +35,12 @@ def _get_kwargs(
     else:
         json_observable_type = observable_type
     params["observable_type"] = json_observable_type
+
+    json_status: str | Unset = UNSET
+    if not isinstance(status, Unset):
+        json_status = status.value
+
+    params["status"] = json_status
 
     params["page"] = page
 
@@ -84,6 +92,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     search: None | str | Unset = UNSET,
     observable_type: None | str | Unset = UNSET,
+    status: DetectionStatus | Unset = UNSET,
     page: int | Unset = 1,
     page_size: int | Unset = 50,
 ) -> Response[DetectionPage | HTTPValidationError]:
@@ -92,6 +101,11 @@ def sync_detailed(
     Args:
         search (None | str | Unset):
         observable_type (None | str | Unset):
+        status (DetectionStatus | Unset): Which detections a listing includes, by expiration.
+
+            A detection has no enabled flag: it is active for as long as it exists and has not
+            expired,
+            which is the same test the engine applies when it loads detections.
         page (int | Unset):  Default: 1.
         page_size (int | Unset):  Default: 50.
 
@@ -106,6 +120,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         search=search,
         observable_type=observable_type,
+        status=status,
         page=page,
         page_size=page_size,
     )
@@ -122,6 +137,7 @@ def sync(
     client: AuthenticatedClient,
     search: None | str | Unset = UNSET,
     observable_type: None | str | Unset = UNSET,
+    status: DetectionStatus | Unset = UNSET,
     page: int | Unset = 1,
     page_size: int | Unset = 50,
 ) -> DetectionPage | HTTPValidationError | None:
@@ -130,6 +146,11 @@ def sync(
     Args:
         search (None | str | Unset):
         observable_type (None | str | Unset):
+        status (DetectionStatus | Unset): Which detections a listing includes, by expiration.
+
+            A detection has no enabled flag: it is active for as long as it exists and has not
+            expired,
+            which is the same test the engine applies when it loads detections.
         page (int | Unset):  Default: 1.
         page_size (int | Unset):  Default: 50.
 
@@ -145,6 +166,7 @@ def sync(
         client=client,
         search=search,
         observable_type=observable_type,
+        status=status,
         page=page,
         page_size=page_size,
     ).parsed
@@ -155,6 +177,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     search: None | str | Unset = UNSET,
     observable_type: None | str | Unset = UNSET,
+    status: DetectionStatus | Unset = UNSET,
     page: int | Unset = 1,
     page_size: int | Unset = 50,
 ) -> Response[DetectionPage | HTTPValidationError]:
@@ -163,6 +186,11 @@ async def asyncio_detailed(
     Args:
         search (None | str | Unset):
         observable_type (None | str | Unset):
+        status (DetectionStatus | Unset): Which detections a listing includes, by expiration.
+
+            A detection has no enabled flag: it is active for as long as it exists and has not
+            expired,
+            which is the same test the engine applies when it loads detections.
         page (int | Unset):  Default: 1.
         page_size (int | Unset):  Default: 50.
 
@@ -177,6 +205,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         search=search,
         observable_type=observable_type,
+        status=status,
         page=page,
         page_size=page_size,
     )
@@ -191,6 +220,7 @@ async def asyncio(
     client: AuthenticatedClient,
     search: None | str | Unset = UNSET,
     observable_type: None | str | Unset = UNSET,
+    status: DetectionStatus | Unset = UNSET,
     page: int | Unset = 1,
     page_size: int | Unset = 50,
 ) -> DetectionPage | HTTPValidationError | None:
@@ -199,6 +229,11 @@ async def asyncio(
     Args:
         search (None | str | Unset):
         observable_type (None | str | Unset):
+        status (DetectionStatus | Unset): Which detections a listing includes, by expiration.
+
+            A detection has no enabled flag: it is active for as long as it exists and has not
+            expired,
+            which is the same test the engine applies when it loads detections.
         page (int | Unset):  Default: 1.
         page_size (int | Unset):  Default: 50.
 
@@ -215,6 +250,7 @@ async def asyncio(
             client=client,
             search=search,
             observable_type=observable_type,
+            status=status,
             page=page,
             page_size=page_size,
         )

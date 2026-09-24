@@ -67,6 +67,9 @@ def sync_detailed(
     A report with ``complete: false`` is one whose worker was killed while it was writing its
     own crash report. What made it to disk is still returned.
 
+    A 200 means ``/download`` will succeed from this node (``downloadable: true``). A report that
+    exists but cannot be reached from here answers 409 ``wrong_node``, naming the node.
+
     Args:
         crash_id (str):
 
@@ -101,6 +104,9 @@ def sync(
     A report with ``complete: false`` is one whose worker was killed while it was writing its
     own crash report. What made it to disk is still returned.
 
+    A 200 means ``/download`` will succeed from this node (``downloadable: true``). A report that
+    exists but cannot be reached from here answers 409 ``wrong_node``, naming the node.
+
     Args:
         crash_id (str):
 
@@ -129,6 +135,9 @@ async def asyncio_detailed(
 
     A report with ``complete: false`` is one whose worker was killed while it was writing its
     own crash report. What made it to disk is still returned.
+
+    A 200 means ``/download`` will succeed from this node (``downloadable: true``). A report that
+    exists but cannot be reached from here answers 409 ``wrong_node``, naming the node.
 
     Args:
         crash_id (str):
@@ -161,6 +170,9 @@ async def asyncio(
 
     A report with ``complete: false`` is one whose worker was killed while it was writing its
     own crash report. What made it to disk is still returned.
+
+    A 200 means ``/download`` will succeed from this node (``downloadable: true``). A report that
+    exists but cannot be reached from here answers 409 ``wrong_node``, naming the node.
 
     Args:
         crash_id (str):

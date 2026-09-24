@@ -26,7 +26,7 @@ class CrashReportDetail:
         crash_type (str): exception (the module raised), timeout (it hung past maximum_analysis_time), or killed (the
             worker manager SIGKILLed the worker)
         insert_date (None | str | Unset):
-        node (None | str | Unset): the node whose disk holds this report; a report only exists on the node that crashed
+        node (None | str | Unset): the node that wrote this report (its origin)
         module_path (None | str | Unset):
         module_name (None | str | Unset):
         analysis_mode (None | str | Unset):
@@ -37,9 +37,11 @@ class CrashReportDetail:
         exception_message (None | str | Unset):
         has_file (bool | Unset): true if the report carries the bytes of the file observable the module crashed on
             Default: False.
-        local (bool | Unset): true if this report can be downloaded from this node -- either it is on this node's disk,
-            or crash_reporting.replicate is on and a shared copy exists. Note this answers 'can I fetch it', not 'where did
-            it come from'; see node for that. Default: True.
+        local (bool | Unset): true if this report is on this node's own disk. With crash_reporting.replicate on, a
+            report that is not local may still be downloadable from the shared copy, or may not be yet; GET
+            /crashes/{crash_id} is the answer (downloadable: true, or a 409). See node for origin. Default: False.
+        downloadable (bool | Unset): true if /download will succeed from this node right now. When it would not, this
+            endpoint answers 409 wrong_node instead, so a 200 always carries true. Default: False.
         remote (bool | Unset): true if this response was served from shared object storage rather than from this node's
             own disk Default: False.
         complete (bool | Unset): false if the report has no metadata.json, meaning the worker was killed while writing
@@ -76,7 +78,8 @@ class CrashReportDetail:
     exception_type: None | str | Unset = UNSET
     exception_message: None | str | Unset = UNSET
     has_file: bool | Unset = False
-    local: bool | Unset = True
+    local: bool | Unset = False
+    downloadable: bool | Unset = False
     remote: bool | Unset = False
     complete: bool | Unset = True
     report_dir: None | str | Unset = UNSET
@@ -165,6 +168,8 @@ class CrashReportDetail:
         has_file = self.has_file
 
         local = self.local
+
+        downloadable = self.downloadable
 
         remote = self.remote
 
@@ -300,6 +305,8 @@ class CrashReportDetail:
             field_dict["has_file"] = has_file
         if local is not UNSET:
             field_dict["local"] = local
+        if downloadable is not UNSET:
+            field_dict["downloadable"] = downloadable
         if remote is not UNSET:
             field_dict["remote"] = remote
         if complete is not UNSET:
@@ -444,6 +451,8 @@ class CrashReportDetail:
         has_file = d.pop("has_file", UNSET)
 
         local = d.pop("local", UNSET)
+
+        downloadable = d.pop("downloadable", UNSET)
 
         remote = d.pop("remote", UNSET)
 
@@ -610,6 +619,7 @@ class CrashReportDetail:
             exception_message=exception_message,
             has_file=has_file,
             local=local,
+            downloadable=downloadable,
             remote=remote,
             complete=complete,
             report_dir=report_dir,

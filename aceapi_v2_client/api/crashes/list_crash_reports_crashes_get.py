@@ -109,9 +109,9 @@ def sync_detailed(
 
      List crash reports, newest first.
 
-    Lists across every node, since the index is cluster-wide, but only reports with
-    ``local: true`` can be downloaded from this node -- the rest live on the disk of the node
-    whose worker died.
+    Lists across every node, since the index is cluster-wide. ``local: true`` means the report is
+    on this node's disk. With crash_reporting.replicate on, a report that is not local may still
+    be downloadable from the shared copy; ``GET /crashes/{crash_id}`` says whether it is.
 
     Args:
         root_uuid (None | str | Unset): only crashes recorded while analyzing this root/alert uuid
@@ -159,9 +159,9 @@ def sync(
 
      List crash reports, newest first.
 
-    Lists across every node, since the index is cluster-wide, but only reports with
-    ``local: true`` can be downloaded from this node -- the rest live on the disk of the node
-    whose worker died.
+    Lists across every node, since the index is cluster-wide. ``local: true`` means the report is
+    on this node's disk. With crash_reporting.replicate on, a report that is not local may still
+    be downloadable from the shared copy; ``GET /crashes/{crash_id}`` says whether it is.
 
     Args:
         root_uuid (None | str | Unset): only crashes recorded while analyzing this root/alert uuid
@@ -204,9 +204,9 @@ async def asyncio_detailed(
 
      List crash reports, newest first.
 
-    Lists across every node, since the index is cluster-wide, but only reports with
-    ``local: true`` can be downloaded from this node -- the rest live on the disk of the node
-    whose worker died.
+    Lists across every node, since the index is cluster-wide. ``local: true`` means the report is
+    on this node's disk. With crash_reporting.replicate on, a report that is not local may still
+    be downloadable from the shared copy; ``GET /crashes/{crash_id}`` says whether it is.
 
     Args:
         root_uuid (None | str | Unset): only crashes recorded while analyzing this root/alert uuid
@@ -252,9 +252,9 @@ async def asyncio(
 
      List crash reports, newest first.
 
-    Lists across every node, since the index is cluster-wide, but only reports with
-    ``local: true`` can be downloaded from this node -- the rest live on the disk of the node
-    whose worker died.
+    Lists across every node, since the index is cluster-wide. ``local: true`` means the report is
+    on this node's disk. With crash_reporting.replicate on, a report that is not local may still
+    be downloadable from the shared copy; ``GET /crashes/{crash_id}`` says whether it is.
 
     Args:
         root_uuid (None | str | Unset): only crashes recorded while analyzing this root/alert uuid

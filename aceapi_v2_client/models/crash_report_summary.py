@@ -21,7 +21,7 @@ class CrashReportSummary:
         crash_type (str): exception (the module raised), timeout (it hung past maximum_analysis_time), or killed (the
             worker manager SIGKILLed the worker)
         insert_date (None | str | Unset):
-        node (None | str | Unset): the node whose disk holds this report; a report only exists on the node that crashed
+        node (None | str | Unset): the node that wrote this report (its origin)
         module_path (None | str | Unset):
         module_name (None | str | Unset):
         analysis_mode (None | str | Unset):
@@ -32,9 +32,9 @@ class CrashReportSummary:
         exception_message (None | str | Unset):
         has_file (bool | Unset): true if the report carries the bytes of the file observable the module crashed on
             Default: False.
-        local (bool | Unset): true if this report can be downloaded from this node -- either it is on this node's disk,
-            or crash_reporting.replicate is on and a shared copy exists. Note this answers 'can I fetch it', not 'where did
-            it come from'; see node for that. Default: True.
+        local (bool | Unset): true if this report is on this node's own disk. With crash_reporting.replicate on, a
+            report that is not local may still be downloadable from the shared copy, or may not be yet; GET
+            /crashes/{crash_id} is the answer (downloadable: true, or a 409). See node for origin. Default: False.
     """
 
     crash_id: str
@@ -50,7 +50,7 @@ class CrashReportSummary:
     exception_type: None | str | Unset = UNSET
     exception_message: None | str | Unset = UNSET
     has_file: bool | Unset = False
-    local: bool | Unset = True
+    local: bool | Unset = False
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

@@ -115,7 +115,8 @@ The practical consequence for client code: a call can fail with
 `403 {"detail": "Permission denied"}` even though the key is valid and the owner
 is privileged, because the *key* is scoped too narrowly. Most read/write
 endpoints are permission-gated — including `/observable-types/`, the
-`observable-*`, `threat*`, `search`, `alerts` and `crashes` endpoints, and
+`observable-*`, `threat*`, `search`, `alerts`, `crashes` and `signatures/yara-qa`
+endpoints (`signature:read`; the yara-qa downloads need `signature:download`), and
 `/common/valid_*`. Only `/health/ping`, `/common/ping`,
 `/common/supported_api_version`, and `/users/me/apikeys` are reachable with any
 valid key.
@@ -150,7 +151,7 @@ for key in list_my_api_keys_users_me_apikeys_get.sync(client=client):
 
 ## Endpoint coverage
 
-The client covers **every endpoint the API publishes** — all 73 operations
+The client covers **every endpoint the API publishes** — all 80 operations
 across the groups below. `tests/test_coverage.py` enforces this: it reads the
 vendored `openapi.json`, imports the matching module for each operation, and
 fails if the API grew an endpoint the client has not been regenerated for (or
@@ -290,6 +291,21 @@ kept one the API dropped). It needs no running instance.
 </details>
 
 <details>
+<summary><code>aceapi_v2_client.api.signatures</code> — 7 operations</summary>
+
+| operation | module |
+| --------- | ------ |
+| `GET /signatures/yara-qa/` | `list_signatures_signatures_yara_qa_get` |
+| `GET /signatures/yara-qa/matches/{match_id}` | `get_match_signatures_yara_qa_matches_match_id_get` |
+| `GET /signatures/yara-qa/matches/{match_id}/download` | `download_match_signatures_yara_qa_matches_match_id_download_get` |
+| `GET /signatures/yara-qa/matches/{match_id}/record` | `get_match_record_signatures_yara_qa_matches_match_id_record_get` |
+| `GET /signatures/yara-qa/{signature_uuid}` | `get_signature_signatures_yara_qa_signature_uuid_get` |
+| `GET /signatures/yara-qa/{signature_uuid}/download` | `download_signature_matches_signatures_yara_qa_signature_uuid_download_get` |
+| `GET /signatures/yara-qa/{signature_uuid}/matches` | `list_matches_signatures_yara_qa_signature_uuid_matches_get` |
+
+</details>
+
+<details>
 <summary><code>aceapi_v2_client.api.threats</code> — 8 operations</summary>
 
 | operation | module |
@@ -335,8 +351,8 @@ kept one the API dropped). It needs no running instance.
 
 ### Endpoints that do not return JSON
 
-Four operations serve something other than `application/json`. They still return
-their payload through `.parsed`, but with a caveat on two of them:
+Six operations serve something other than `application/json`. They still return
+their payload through `.parsed`, but with a caveat on four of them:
 
 | operation | `.parsed` holds | annotated as |
 | --------- | --------------- | ------------ |
@@ -344,8 +360,10 @@ their payload through `.parsed`, but with a caveat on two of them:
 | `GET /events/export` | the CSV/JSON export text | `str` |
 | `GET /alerts/{alert_uuid}/download` | the zip, as **`bytes`** | `str` |
 | `GET /crashes/{crash_id}/download` | the zip, as **`bytes`** | `str` |
+| `GET /signatures/yara-qa/matches/{match_id}/download` | the zip, as **`bytes`** | `str` |
+| `GET /signatures/yara-qa/{signature_uuid}/download` | the zip, as **`bytes`** | `str` |
 
-The two zip downloads really do hand back `bytes` at runtime — the `str`
+The four zip downloads really do hand back `bytes` at runtime — the `str`
 annotation is an artifact of the schema declaring the body as a string with a
 `contentMediaType`, and the generator honouring that literally. Write the result
 straight to a file in binary mode:
@@ -362,8 +380,9 @@ response = download_alert_alerts_alert_uuid_download_get.sync_detailed(
 Path("alert.zip").write_bytes(response.content)
 ```
 
-Both archives are **zip-encrypted with the password `infected`** — they contain
-the file observables the alert or crash was built from.
+All four archives are **zip-encrypted with the password `infected`** — they
+contain the file observables the alert or crash was built from, or the files a
+YARA QA rule matched.
 
 ## Base URL and TLS notes
 

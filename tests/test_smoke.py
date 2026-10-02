@@ -37,6 +37,7 @@ from aceapi_v2_client.api.saved_filters import (
     update_saved_filter_saved_filters_filter_uuid_patch,
 )
 from aceapi_v2_client.api.search import search_alerts_search_alerts_post
+from aceapi_v2_client.api.signatures import list_signatures_signatures_yara_qa_get
 from aceapi_v2_client.api.users import (
     get_me_users_me_get,
     get_preferences_users_me_preferences_get,
@@ -149,6 +150,13 @@ def test_list_crash_reports(client):
     response = list_crash_reports_crashes_get.sync_detailed(client=client)
     assert response.status_code == 200
     assert response.parsed is not None
+
+
+def test_list_yara_qa_signatures(client):
+    response = list_signatures_signatures_yara_qa_get.sync_detailed(client=client)
+    assert response.status_code == 200
+    assert response.parsed is not None
+    assert isinstance(response.parsed.data, list)
 
 
 def test_export_events_returns_text(client):

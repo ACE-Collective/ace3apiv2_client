@@ -1,0 +1,199 @@
+from http import HTTPStatus
+from typing import Any, cast
+from urllib.parse import quote
+
+import httpx
+
+from ... import errors
+from ...client import AuthenticatedClient, Client
+from ...models.http_validation_error import HTTPValidationError
+from ...types import Response
+
+
+def _get_kwargs(
+    guid: str,
+    platform: str,
+    signature_uuid: str,
+) -> dict[str, Any]:
+
+    _kwargs: dict[str, Any] = {
+        "method": "delete",
+        "url": "/svs/tests/{guid}/expectations/{platform}/{signature_uuid}".format(
+            guid=quote(str(guid), safe=""),
+            platform=quote(str(platform), safe=""),
+            signature_uuid=quote(str(signature_uuid), safe=""),
+        ),
+    }
+
+    return _kwargs
+
+
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | HTTPValidationError | None:
+    if response.status_code == 204:
+        response_204 = cast(Any, None)
+        return response_204
+
+    if response.status_code == 422:
+        response_422 = HTTPValidationError.from_dict(response.json())
+
+        return response_422
+
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        return None
+
+
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | HTTPValidationError]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    guid: str,
+    platform: str,
+    signature_uuid: str,
+    *,
+    client: AuthenticatedClient,
+) -> Response[Any | HTTPValidationError]:
+    """Remove Expectation
+
+     Remove a decision: the signature is a candidate again the next time a run on the platform
+    fires it.
+
+    Args:
+        guid (str):
+        platform (str):
+        signature_uuid (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any | HTTPValidationError]
+    """
+
+    kwargs = _get_kwargs(
+        guid=guid,
+        platform=platform,
+        signature_uuid=signature_uuid,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    guid: str,
+    platform: str,
+    signature_uuid: str,
+    *,
+    client: AuthenticatedClient,
+) -> Any | HTTPValidationError | None:
+    """Remove Expectation
+
+     Remove a decision: the signature is a candidate again the next time a run on the platform
+    fires it.
+
+    Args:
+        guid (str):
+        platform (str):
+        signature_uuid (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Any | HTTPValidationError
+    """
+
+    return sync_detailed(
+        guid=guid,
+        platform=platform,
+        signature_uuid=signature_uuid,
+        client=client,
+    ).parsed
+
+
+async def asyncio_detailed(
+    guid: str,
+    platform: str,
+    signature_uuid: str,
+    *,
+    client: AuthenticatedClient,
+) -> Response[Any | HTTPValidationError]:
+    """Remove Expectation
+
+     Remove a decision: the signature is a candidate again the next time a run on the platform
+    fires it.
+
+    Args:
+        guid (str):
+        platform (str):
+        signature_uuid (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any | HTTPValidationError]
+    """
+
+    kwargs = _get_kwargs(
+        guid=guid,
+        platform=platform,
+        signature_uuid=signature_uuid,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    guid: str,
+    platform: str,
+    signature_uuid: str,
+    *,
+    client: AuthenticatedClient,
+) -> Any | HTTPValidationError | None:
+    """Remove Expectation
+
+     Remove a decision: the signature is a candidate again the next time a run on the platform
+    fires it.
+
+    Args:
+        guid (str):
+        platform (str):
+        signature_uuid (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Any | HTTPValidationError
+    """
+
+    return (
+        await asyncio_detailed(
+            guid=guid,
+            platform=platform,
+            signature_uuid=signature_uuid,
+            client=client,
+        )
+    ).parsed

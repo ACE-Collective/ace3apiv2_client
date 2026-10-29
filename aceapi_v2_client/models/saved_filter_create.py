@@ -9,7 +9,7 @@ from typing_extensions import Self
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.filter_entry import FilterEntry
+    from ..models.filter_entry_base import FilterEntryBase
 
 
 T = TypeVar("T", bound="SavedFilterCreate")
@@ -20,14 +20,14 @@ class SavedFilterCreate:
     """
     Attributes:
         name (str):
-        filters (list[FilterEntry]):
+        filters (list[FilterEntryBase]):
         description (None | str | Unset):
         quick_filter (bool | Unset): pin as a quick filter badge Default: False.
         quick_filter_indicator (bool | Unset): show an alert count on the badge Default: False.
     """
 
     name: str
-    filters: list[FilterEntry]
+    filters: list[FilterEntryBase]
     description: None | str | Unset = UNSET
     quick_filter: bool | Unset = False
     quick_filter_indicator: bool | Unset = False
@@ -69,7 +69,7 @@ class SavedFilterCreate:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.filter_entry import FilterEntry
+        from ..models.filter_entry_base import FilterEntryBase
 
         d = dict(src_dict)
         name = d.pop("name")
@@ -77,7 +77,7 @@ class SavedFilterCreate:
         filters = []
         _filters = d.pop("filters")
         for filters_item_data in _filters:
-            filters_item = FilterEntry.from_dict(filters_item_data)
+            filters_item = FilterEntryBase.from_dict(filters_item_data)
 
             filters.append(filters_item)
 

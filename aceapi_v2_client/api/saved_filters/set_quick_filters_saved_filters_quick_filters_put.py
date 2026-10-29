@@ -8,18 +8,26 @@ from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.list_response_saved_filter_read import ListResponseSavedFilterRead
 from ...models.quick_filter_order import QuickFilterOrder
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     body: QuickFilterOrder,
+    screen: str | Unset = "alerts",
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
+
+    params: dict[str, Any] = {}
+
+    params["screen"] = screen
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
     _kwargs: dict[str, Any] = {
         "method": "put",
         "url": "/saved-filters/quick-filters",
+        "params": params,
     }
 
     _kwargs["json"] = body.to_dict()
@@ -64,13 +72,15 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: QuickFilterOrder,
+    screen: str | Unset = "alerts",
 ) -> Response[HTTPValidationError | ListResponseSavedFilterRead]:
     """Set Quick Filters
 
-     Set quick-filter membership and order together. Anything not listed is unpinned, so
-    a reorder UI can submit its whole state and the call is idempotent.
+     Set a screen's quick-filter membership and order together. Anything not listed is
+    unpinned, so a reorder UI can submit its whole state and the call is idempotent.
 
     Args:
+        screen (str | Unset): the screen the saved filters belong to Default: 'alerts'.
         body (QuickFilterOrder): The complete, ordered set of pinned quick filters. Anything not
             listed is unpinned,
             which makes the call idempotent and lets a reorder UI submit its whole state.
@@ -85,6 +95,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        screen=screen,
     )
 
     response = client.get_httpx_client().request(
@@ -98,13 +109,15 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: QuickFilterOrder,
+    screen: str | Unset = "alerts",
 ) -> HTTPValidationError | ListResponseSavedFilterRead | None:
     """Set Quick Filters
 
-     Set quick-filter membership and order together. Anything not listed is unpinned, so
-    a reorder UI can submit its whole state and the call is idempotent.
+     Set a screen's quick-filter membership and order together. Anything not listed is
+    unpinned, so a reorder UI can submit its whole state and the call is idempotent.
 
     Args:
+        screen (str | Unset): the screen the saved filters belong to Default: 'alerts'.
         body (QuickFilterOrder): The complete, ordered set of pinned quick filters. Anything not
             listed is unpinned,
             which makes the call idempotent and lets a reorder UI submit its whole state.
@@ -120,6 +133,7 @@ def sync(
     return sync_detailed(
         client=client,
         body=body,
+        screen=screen,
     ).parsed
 
 
@@ -127,13 +141,15 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: QuickFilterOrder,
+    screen: str | Unset = "alerts",
 ) -> Response[HTTPValidationError | ListResponseSavedFilterRead]:
     """Set Quick Filters
 
-     Set quick-filter membership and order together. Anything not listed is unpinned, so
-    a reorder UI can submit its whole state and the call is idempotent.
+     Set a screen's quick-filter membership and order together. Anything not listed is
+    unpinned, so a reorder UI can submit its whole state and the call is idempotent.
 
     Args:
+        screen (str | Unset): the screen the saved filters belong to Default: 'alerts'.
         body (QuickFilterOrder): The complete, ordered set of pinned quick filters. Anything not
             listed is unpinned,
             which makes the call idempotent and lets a reorder UI submit its whole state.
@@ -148,6 +164,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        screen=screen,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -159,13 +176,15 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: QuickFilterOrder,
+    screen: str | Unset = "alerts",
 ) -> HTTPValidationError | ListResponseSavedFilterRead | None:
     """Set Quick Filters
 
-     Set quick-filter membership and order together. Anything not listed is unpinned, so
-    a reorder UI can submit its whole state and the call is idempotent.
+     Set a screen's quick-filter membership and order together. Anything not listed is
+    unpinned, so a reorder UI can submit its whole state and the call is idempotent.
 
     Args:
+        screen (str | Unset): the screen the saved filters belong to Default: 'alerts'.
         body (QuickFilterOrder): The complete, ordered set of pinned quick filters. Anything not
             listed is unpinned,
             which makes the call idempotent and lets a reorder UI submit its whole state.
@@ -182,5 +201,6 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             body=body,
+            screen=screen,
         )
     ).parsed

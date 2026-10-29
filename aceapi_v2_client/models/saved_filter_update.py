@@ -9,7 +9,7 @@ from typing_extensions import Self
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.filter_entry import FilterEntry
+    from ..models.filter_entry_base import FilterEntryBase
 
 
 T = TypeVar("T", bound="SavedFilterUpdate")
@@ -21,13 +21,13 @@ class SavedFilterUpdate:
     Attributes:
         name (None | str | Unset):
         description (None | str | Unset):
-        filters (list[FilterEntry] | None | Unset):
+        filters (list[FilterEntryBase] | None | Unset):
         quick_filter_indicator (bool | None | Unset):
     """
 
     name: None | str | Unset = UNSET
     description: None | str | Unset = UNSET
-    filters: list[FilterEntry] | None | Unset = UNSET
+    filters: list[FilterEntryBase] | None | Unset = UNSET
     quick_filter_indicator: bool | None | Unset = UNSET
 
     def to_dict(self) -> dict[str, Any]:
@@ -77,7 +77,7 @@ class SavedFilterUpdate:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.filter_entry import FilterEntry
+        from ..models.filter_entry_base import FilterEntryBase
 
         d = dict(src_dict)
 
@@ -99,7 +99,7 @@ class SavedFilterUpdate:
 
         description = _parse_description(d.pop("description", UNSET))
 
-        def _parse_filters(data: object) -> list[FilterEntry] | None | Unset:
+        def _parse_filters(data: object) -> list[FilterEntryBase] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
@@ -110,7 +110,7 @@ class SavedFilterUpdate:
                 filters_type_0 = []
                 _filters_type_0 = data
                 for filters_type_0_item_data in _filters_type_0:
-                    filters_type_0_item = FilterEntry.from_dict(
+                    filters_type_0_item = FilterEntryBase.from_dict(
                         filters_type_0_item_data
                     )
 
@@ -119,7 +119,7 @@ class SavedFilterUpdate:
                 return filters_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(list[FilterEntry] | None | Unset, data)
+            return cast(list[FilterEntryBase] | None | Unset, data)
 
         filters = _parse_filters(d.pop("filters", UNSET))
 

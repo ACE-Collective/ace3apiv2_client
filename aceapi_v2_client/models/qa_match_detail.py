@@ -127,9 +127,7 @@ class QAMatchDetail:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.qa_match_detail_match_summary import (
-            QAMatchDetailMatchSummary,
-        )
+        from ..models.qa_match_detail_match_summary import QAMatchDetailMatchSummary
 
         d = dict(src_dict)
         id = d.pop("id")

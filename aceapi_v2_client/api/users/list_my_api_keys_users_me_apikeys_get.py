@@ -56,8 +56,8 @@ def sync_detailed(
     """List My Api Keys
 
      List the *caller's own* API keys (metadata + scope only; no secret). The user id comes from
-    the auth result, not the request, so there is no id to tamper with. Read-only: minting and
-    revoking keys require ``user:write`` and go through the admin endpoints below.
+    the auth result, not the request, so there is no id to tamper with. Needs no permission:
+    changing keys does (``user:self`` for the caller's own, below; ``user:write`` for anyone's).
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -83,8 +83,8 @@ def sync(
     """List My Api Keys
 
      List the *caller's own* API keys (metadata + scope only; no secret). The user id comes from
-    the auth result, not the request, so there is no id to tamper with. Read-only: minting and
-    revoking keys require ``user:write`` and go through the admin endpoints below.
+    the auth result, not the request, so there is no id to tamper with. Needs no permission:
+    changing keys does (``user:self`` for the caller's own, below; ``user:write`` for anyone's).
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -106,8 +106,8 @@ async def asyncio_detailed(
     """List My Api Keys
 
      List the *caller's own* API keys (metadata + scope only; no secret). The user id comes from
-    the auth result, not the request, so there is no id to tamper with. Read-only: minting and
-    revoking keys require ``user:write`` and go through the admin endpoints below.
+    the auth result, not the request, so there is no id to tamper with. Needs no permission:
+    changing keys does (``user:self`` for the caller's own, below; ``user:write`` for anyone's).
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -131,8 +131,8 @@ async def asyncio(
     """List My Api Keys
 
      List the *caller's own* API keys (metadata + scope only; no secret). The user id comes from
-    the auth result, not the request, so there is no id to tamper with. Read-only: minting and
-    revoking keys require ``user:write`` and go through the admin endpoints below.
+    the auth result, not the request, so there is no id to tamper with. Needs no permission:
+    changing keys does (``user:self`` for the caller's own, below; ``user:write`` for anyone's).
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

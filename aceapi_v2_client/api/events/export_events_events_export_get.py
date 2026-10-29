@@ -12,23 +12,23 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    type_: ExportFormat | Unset = UNSET,
     checked_events: list[int] | Unset = UNSET,
+    type_: ExportFormat | Unset = UNSET,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
-
-    json_type_: str | Unset = UNSET
-    if not isinstance(type_, Unset):
-        json_type_ = type_.value
-
-    params["type"] = json_type_
 
     json_checked_events: list[int] | Unset = UNSET
     if not isinstance(checked_events, Unset):
         json_checked_events = checked_events
 
     params["checked_events[]"] = json_checked_events
+
+    json_type_: str | Unset = UNSET
+    if not isinstance(type_, Unset):
+        json_type_ = type_.value
+
+    params["type"] = json_type_
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -73,15 +73,15 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    type_: ExportFormat | Unset = UNSET,
     checked_events: list[int] | Unset = UNSET,
+    type_: ExportFormat | Unset = UNSET,
 ) -> Response[HTTPValidationError | str]:
     """Export Events
 
     Args:
+        checked_events (list[int] | Unset):
         type_ (ExportFormat | Unset): Supported event export formats. Add new formats here without
             a new route.
-        checked_events (list[int] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -92,8 +92,8 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        type_=type_,
         checked_events=checked_events,
+        type_=type_,
     )
 
     response = client.get_httpx_client().request(
@@ -106,15 +106,15 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    type_: ExportFormat | Unset = UNSET,
     checked_events: list[int] | Unset = UNSET,
+    type_: ExportFormat | Unset = UNSET,
 ) -> HTTPValidationError | str | None:
     """Export Events
 
     Args:
+        checked_events (list[int] | Unset):
         type_ (ExportFormat | Unset): Supported event export formats. Add new formats here without
             a new route.
-        checked_events (list[int] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -126,23 +126,23 @@ def sync(
 
     return sync_detailed(
         client=client,
-        type_=type_,
         checked_events=checked_events,
+        type_=type_,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    type_: ExportFormat | Unset = UNSET,
     checked_events: list[int] | Unset = UNSET,
+    type_: ExportFormat | Unset = UNSET,
 ) -> Response[HTTPValidationError | str]:
     """Export Events
 
     Args:
+        checked_events (list[int] | Unset):
         type_ (ExportFormat | Unset): Supported event export formats. Add new formats here without
             a new route.
-        checked_events (list[int] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -153,8 +153,8 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        type_=type_,
         checked_events=checked_events,
+        type_=type_,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -165,15 +165,15 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    type_: ExportFormat | Unset = UNSET,
     checked_events: list[int] | Unset = UNSET,
+    type_: ExportFormat | Unset = UNSET,
 ) -> HTTPValidationError | str | None:
     """Export Events
 
     Args:
+        checked_events (list[int] | Unset):
         type_ (ExportFormat | Unset): Supported event export formats. Add new formats here without
             a new route.
-        checked_events (list[int] | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -186,7 +186,7 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
-            type_=type_,
             checked_events=checked_events,
+            type_=type_,
         )
     ).parsed

@@ -31,6 +31,8 @@ class AlertSearchResponse:
         results (list[AlertSearchResultOut]):
         lanes_used (list[AlertSearchResponseLanesUsedItem]):
         timings_ms (AlertSearchResponseTimingsMs):
+        excluded_test_alerts (int | None | Unset): how many test-run alerts (svs.queue) matched and were left out; null
+            when none were left out because the request named a queue or set include_test_alerts
         errors (list[str] | Unset): query language problems. When this is non-empty nothing was searched: a term that
             cannot be honored is reported rather than dropped, because dropping it would return MORE alerts than were asked
             for
@@ -43,6 +45,7 @@ class AlertSearchResponse:
     results: list[AlertSearchResultOut]
     lanes_used: list[AlertSearchResponseLanesUsedItem]
     timings_ms: AlertSearchResponseTimingsMs
+    excluded_test_alerts: int | None | Unset = UNSET
     errors: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -67,6 +70,12 @@ class AlertSearchResponse:
 
         timings_ms = self.timings_ms.to_dict()
 
+        excluded_test_alerts: int | None | Unset
+        if isinstance(self.excluded_test_alerts, Unset):
+            excluded_test_alerts = UNSET
+        else:
+            excluded_test_alerts = self.excluded_test_alerts
+
         errors: list[str] | Unset = UNSET
         if not isinstance(self.errors, Unset):
             errors = self.errors
@@ -84,6 +93,8 @@ class AlertSearchResponse:
                 "timings_ms": timings_ms,
             }
         )
+        if excluded_test_alerts is not UNSET:
+            field_dict["excluded_test_alerts"] = excluded_test_alerts
         if errors is not UNSET:
             field_dict["errors"] = errors
 
@@ -94,9 +105,7 @@ class AlertSearchResponse:
         from ..models.alert_search_response_timings_ms import (
             AlertSearchResponseTimingsMs,
         )
-        from ..models.alert_search_result_out import (
-            AlertSearchResultOut,
-        )
+        from ..models.alert_search_result_out import AlertSearchResultOut
 
         d = dict(src_dict)
         query = d.pop("query")
@@ -123,6 +132,17 @@ class AlertSearchResponse:
 
         timings_ms = AlertSearchResponseTimingsMs.from_dict(d.pop("timings_ms"))
 
+        def _parse_excluded_test_alerts(data: object) -> int | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(int | None | Unset, data)
+
+        excluded_test_alerts = _parse_excluded_test_alerts(
+            d.pop("excluded_test_alerts", UNSET)
+        )
+
         errors = cast(list[str], d.pop("errors", UNSET))
 
         alert_search_response = cls(
@@ -133,6 +153,7 @@ class AlertSearchResponse:
             results=results,
             lanes_used=lanes_used,
             timings_ms=timings_ms,
+            excluded_test_alerts=excluded_test_alerts,
             errors=errors,
         )
 

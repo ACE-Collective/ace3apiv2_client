@@ -69,9 +69,7 @@ class ValidationError:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.validation_error_context import (
-            ValidationErrorContext,
-        )
+        from ..models.validation_error_context import ValidationErrorContext
 
         d = dict(src_dict)
         loc = []

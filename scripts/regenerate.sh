@@ -32,6 +32,11 @@ CONFIG_FILE="${PROJECT_DIR}/openapi-python-client-config.yaml"
 # files we hand-maintain inside the package; these must survive regeneration
 PRESERVE=(auth.py py.typed)
 
+# path prefixes dropped from the schema before generating. /engine/* are the
+# node-to-node routes ace's engines call on each other; the api v2 app publishes
+# them in its schema, but they are not an api for clients.
+EXCLUDE_PATH_PREFIXES=(/engine/)
+
 # the generator runs from a venv, so the work dir must be on an exec-capable
 # filesystem. /tmp is often mounted noexec, so default to a project-local dir
 # (override with REGEN_TMPDIR). it is removed on exit.
@@ -52,6 +57,45 @@ echo ">> fetching schema from ${SCHEMA_URL}"
 # shellcheck disable=SC2086
 curl ${CURL_OPTS} --fail -o "${SCHEMA_FILE}" "${SCHEMA_URL}"
 python3 -m json.tool "${SCHEMA_FILE}" > /dev/null
+
+echo ">> dropping excluded paths: ${EXCLUDE_PATH_PREFIXES[*]}"
+# the generator emits a model for every component schema whether or not an
+# operation uses it, so the schemas only the dropped paths referenced are pruned
+# too (transitively). the file is rewritten in the compact form fastapi serves.
+python3 -I - "${SCHEMA_FILE}" "${EXCLUDE_PATH_PREFIXES[@]}" <<'EOF'
+import json
+import re
+import sys
+
+schema_file, prefixes = sys.argv[1], tuple(sys.argv[2:])
+with open(schema_file) as fp:
+    schema = json.load(fp)
+
+dropped = [path for path in schema["paths"] if path.startswith(prefixes)]
+for path in dropped:
+    del schema["paths"][path]
+
+def refs(node):
+    return set(re.findall(r'"#/components/schemas/([^"]+)"', json.dumps(node)))
+
+components = schema.get("components", {}).get("schemas", {})
+reachable = set()
+pending = refs({key: value for key, value in schema.items() if key != "components"})
+while pending:
+    name = pending.pop()
+    if name not in reachable:
+        reachable.add(name)
+        pending |= refs(components.get(name, {}))
+pruned = sorted(set(components) - reachable)
+for name in pruned:
+    del components[name]
+
+with open(schema_file, "w") as fp:
+    json.dump(schema, fp, separators=(",", ":"), ensure_ascii=False)
+print(f"   dropped {len(dropped)} paths and {len(pruned)} unused schemas")
+for name in dropped + pruned:
+    print(f"     {name}")
+EOF
 echo ">> wrote $(wc -c < "${SCHEMA_FILE}") bytes to ${SCHEMA_FILE}"
 
 echo ">> creating isolated venv for the generator"

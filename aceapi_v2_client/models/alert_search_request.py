@@ -40,6 +40,9 @@ class AlertSearchRequest:
             offset (int | Unset):  Default: 0.
             include_hits (bool | Unset): include the matching snippets for each alert Default: True.
             lanes (list[AlertSearchRequestLanesItem] | Unset):
+            include_test_alerts (bool | Unset): include test-run alerts (the svs.queue queue, docs/SVS_RUNS.md). They are
+                left out by default unless the filters or the query name a queue; excluded_test_alerts in the response says how
+                many were Default: False.
     """
 
     query: None | str | Unset = UNSET
@@ -48,6 +51,7 @@ class AlertSearchRequest:
     offset: int | Unset = 0
     include_hits: bool | Unset = True
     lanes: list[AlertSearchRequestLanesItem] | Unset = UNSET
+    include_test_alerts: bool | Unset = False
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -74,6 +78,8 @@ class AlertSearchRequest:
                 lanes_item = lanes_item_data.value
                 lanes.append(lanes_item)
 
+        include_test_alerts = self.include_test_alerts
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -89,6 +95,8 @@ class AlertSearchRequest:
             field_dict["include_hits"] = include_hits
         if lanes is not UNSET:
             field_dict["lanes"] = lanes
+        if include_test_alerts is not UNSET:
+            field_dict["include_test_alerts"] = include_test_alerts
 
         return field_dict
 
@@ -129,6 +137,8 @@ class AlertSearchRequest:
 
                 lanes.append(lanes_item)
 
+        include_test_alerts = d.pop("include_test_alerts", UNSET)
+
         alert_search_request = cls(
             query=query,
             filters=filters,
@@ -136,6 +146,7 @@ class AlertSearchRequest:
             offset=offset,
             include_hits=include_hits,
             lanes=lanes,
+            include_test_alerts=include_test_alerts,
         )
 
         alert_search_request.additional_properties = d

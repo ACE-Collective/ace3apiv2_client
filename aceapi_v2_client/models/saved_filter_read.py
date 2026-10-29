@@ -11,7 +11,7 @@ from typing_extensions import Self
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.filter_entry import FilterEntry
+    from ..models.filter_entry_base import FilterEntryBase
 
 
 T = TypeVar("T", bound="SavedFilterRead")
@@ -23,8 +23,9 @@ class SavedFilterRead:
 
     Attributes:
         uuid (str):
+        screen (str):
         kind (str):
-        filters (list[FilterEntry]):
+        filters (list[FilterEntryBase]):
         owner_id (int):
         owner_display_name (str):
         created_at (datetime.datetime):
@@ -36,8 +37,9 @@ class SavedFilterRead:
     """
 
     uuid: str
+    screen: str
     kind: str
-    filters: list[FilterEntry]
+    filters: list[FilterEntryBase]
     owner_id: int
     owner_display_name: str
     created_at: datetime.datetime
@@ -50,6 +52,8 @@ class SavedFilterRead:
 
     def to_dict(self) -> dict[str, Any]:
         uuid = self.uuid
+
+        screen = self.screen
 
         kind = self.kind
 
@@ -91,6 +95,7 @@ class SavedFilterRead:
         field_dict.update(
             {
                 "uuid": uuid,
+                "screen": screen,
                 "kind": kind,
                 "filters": filters,
                 "owner_id": owner_id,
@@ -112,17 +117,19 @@ class SavedFilterRead:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.filter_entry import FilterEntry
+        from ..models.filter_entry_base import FilterEntryBase
 
         d = dict(src_dict)
         uuid = d.pop("uuid")
+
+        screen = d.pop("screen")
 
         kind = d.pop("kind")
 
         filters = []
         _filters = d.pop("filters")
         for filters_item_data in _filters:
-            filters_item = FilterEntry.from_dict(filters_item_data)
+            filters_item = FilterEntryBase.from_dict(filters_item_data)
 
             filters.append(filters_item)
 
@@ -167,6 +174,7 @@ class SavedFilterRead:
 
         saved_filter_read = cls(
             uuid=uuid,
+            screen=screen,
             kind=kind,
             filters=filters,
             owner_id=owner_id,

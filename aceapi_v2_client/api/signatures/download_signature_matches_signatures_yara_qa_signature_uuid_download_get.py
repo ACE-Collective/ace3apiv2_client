@@ -13,11 +13,17 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     signature_uuid: str,
     *,
-    version: None | str | Unset = UNSET,
     match_id: list[int] | Unset = UNSET,
+    version: None | str | Unset = UNSET,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
+
+    json_match_id: list[int] | Unset = UNSET
+    if not isinstance(match_id, Unset):
+        json_match_id = match_id
+
+    params["match_id"] = json_match_id
 
     json_version: None | str | Unset
     if isinstance(version, Unset):
@@ -25,12 +31,6 @@ def _get_kwargs(
     else:
         json_version = version
     params["version"] = json_version
-
-    json_match_id: list[int] | Unset = UNSET
-    if not isinstance(match_id, Unset):
-        json_match_id = match_id
-
-    params["match_id"] = json_match_id
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -78,8 +78,8 @@ def sync_detailed(
     signature_uuid: str,
     *,
     client: AuthenticatedClient,
-    version: None | str | Unset = UNSET,
     match_id: list[int] | Unset = UNSET,
+    version: None | str | Unset = UNSET,
 ) -> Response[HTTPValidationError | str]:
     """Download Signature Matches
 
@@ -92,9 +92,9 @@ def sync_detailed(
 
     Args:
         signature_uuid (str):
-        version (None | str | Unset): only matches under this version of the rule
         match_id (list[int] | Unset): only these matches (repeat the parameter); every one must
             belong to this signature
+        version (None | str | Unset): only matches under this version of the rule
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -106,8 +106,8 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         signature_uuid=signature_uuid,
-        version=version,
         match_id=match_id,
+        version=version,
     )
 
     response = client.get_httpx_client().request(
@@ -121,8 +121,8 @@ def sync(
     signature_uuid: str,
     *,
     client: AuthenticatedClient,
-    version: None | str | Unset = UNSET,
     match_id: list[int] | Unset = UNSET,
+    version: None | str | Unset = UNSET,
 ) -> HTTPValidationError | str | None:
     """Download Signature Matches
 
@@ -135,9 +135,9 @@ def sync(
 
     Args:
         signature_uuid (str):
-        version (None | str | Unset): only matches under this version of the rule
         match_id (list[int] | Unset): only these matches (repeat the parameter); every one must
             belong to this signature
+        version (None | str | Unset): only matches under this version of the rule
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -150,8 +150,8 @@ def sync(
     return sync_detailed(
         signature_uuid=signature_uuid,
         client=client,
-        version=version,
         match_id=match_id,
+        version=version,
     ).parsed
 
 
@@ -159,8 +159,8 @@ async def asyncio_detailed(
     signature_uuid: str,
     *,
     client: AuthenticatedClient,
-    version: None | str | Unset = UNSET,
     match_id: list[int] | Unset = UNSET,
+    version: None | str | Unset = UNSET,
 ) -> Response[HTTPValidationError | str]:
     """Download Signature Matches
 
@@ -173,9 +173,9 @@ async def asyncio_detailed(
 
     Args:
         signature_uuid (str):
-        version (None | str | Unset): only matches under this version of the rule
         match_id (list[int] | Unset): only these matches (repeat the parameter); every one must
             belong to this signature
+        version (None | str | Unset): only matches under this version of the rule
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -187,8 +187,8 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         signature_uuid=signature_uuid,
-        version=version,
         match_id=match_id,
+        version=version,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -200,8 +200,8 @@ async def asyncio(
     signature_uuid: str,
     *,
     client: AuthenticatedClient,
-    version: None | str | Unset = UNSET,
     match_id: list[int] | Unset = UNSET,
+    version: None | str | Unset = UNSET,
 ) -> HTTPValidationError | str | None:
     """Download Signature Matches
 
@@ -214,9 +214,9 @@ async def asyncio(
 
     Args:
         signature_uuid (str):
-        version (None | str | Unset): only matches under this version of the rule
         match_id (list[int] | Unset): only these matches (repeat the parameter); every one must
             belong to this signature
+        version (None | str | Unset): only matches under this version of the rule
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -230,7 +230,7 @@ async def asyncio(
         await asyncio_detailed(
             signature_uuid=signature_uuid,
             client=client,
-            version=version,
             match_id=match_id,
+            version=version,
         )
     ).parsed

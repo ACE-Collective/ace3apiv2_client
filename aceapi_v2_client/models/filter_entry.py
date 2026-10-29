@@ -13,8 +13,7 @@ T = TypeVar("T", bound="FilterEntry")
 
 @_attrs_define
 class FilterEntry:
-    """One entry of a filter list -- the {name, inverted, values} shape the GUI's filter
-    editor produces, the database stores, and a share URL encodes.
+    """A filter entry of the alert management screen.
 
     This is the single validation gate for all three doors: a modal save, an API call, and
     a hand-edited wiki link are all held to the same standard.

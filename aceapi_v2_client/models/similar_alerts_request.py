@@ -28,6 +28,9 @@ class SimilarAlertsRequest:
         limit (int | Unset):  Default: 10.
         offset (int | Unset):  Default: 0.
         include_hits (bool | Unset):  Default: True.
+        include_test_alerts (bool | Unset): include test-run alerts (the svs.queue queue, docs/SVS_RUNS.md). They are
+            left out by default unless the filters or the query name a queue; excluded_test_alerts in the response says how
+            many were Default: False.
     """
 
     alert_uuid: str
@@ -35,6 +38,7 @@ class SimilarAlertsRequest:
     limit: int | Unset = 10
     offset: int | Unset = 0
     include_hits: bool | Unset = True
+    include_test_alerts: bool | Unset = False
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -49,6 +53,8 @@ class SimilarAlertsRequest:
         offset = self.offset
 
         include_hits = self.include_hits
+
+        include_test_alerts = self.include_test_alerts
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -65,6 +71,8 @@ class SimilarAlertsRequest:
             field_dict["offset"] = offset
         if include_hits is not UNSET:
             field_dict["include_hits"] = include_hits
+        if include_test_alerts is not UNSET:
+            field_dict["include_test_alerts"] = include_test_alerts
 
         return field_dict
 
@@ -88,12 +96,15 @@ class SimilarAlertsRequest:
 
         include_hits = d.pop("include_hits", UNSET)
 
+        include_test_alerts = d.pop("include_test_alerts", UNSET)
+
         similar_alerts_request = cls(
             alert_uuid=alert_uuid,
             filters=filters,
             limit=limit,
             offset=offset,
             include_hits=include_hits,
+            include_test_alerts=include_test_alerts,
         )
 
         similar_alerts_request.additional_properties = d

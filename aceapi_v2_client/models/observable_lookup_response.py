@@ -42,9 +42,7 @@ class ObservableLookupResponse:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.observable_lookup_result import (
-            ObservableLookupResult,
-        )
+        from ..models.observable_lookup_result import ObservableLookupResult
 
         d = dict(src_dict)
         results = []

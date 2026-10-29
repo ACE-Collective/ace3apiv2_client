@@ -9,7 +9,7 @@ from typing_extensions import Self
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.filter_entry import FilterEntry
+    from ..models.filter_entry_base import FilterEntryBase
 
 
 T = TypeVar("T", bound="ScratchFilterWrite")
@@ -20,11 +20,11 @@ class ScratchFilterWrite:
     """Replace the caller's singleton `working` or `temp` row.
 
     Attributes:
-        filters (list[FilterEntry] | Unset):
+        filters (list[FilterEntryBase] | Unset):
         label (None | str | Unset):
     """
 
-    filters: list[FilterEntry] | Unset = UNSET
+    filters: list[FilterEntryBase] | Unset = UNSET
     label: None | str | Unset = UNSET
 
     def to_dict(self) -> dict[str, Any]:
@@ -53,15 +53,15 @@ class ScratchFilterWrite:
 
     @classmethod
     def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
-        from ..models.filter_entry import FilterEntry
+        from ..models.filter_entry_base import FilterEntryBase
 
         d = dict(src_dict)
         _filters = d.pop("filters", UNSET)
-        filters: list[FilterEntry] | Unset = UNSET
+        filters: list[FilterEntryBase] | Unset = UNSET
         if _filters is not UNSET:
             filters = []
             for filters_item_data in _filters:
-                filters_item = FilterEntry.from_dict(filters_item_data)
+                filters_item = FilterEntryBase.from_dict(filters_item_data)
 
                 filters.append(filters_item)
 

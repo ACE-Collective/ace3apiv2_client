@@ -21,6 +21,10 @@ import os
 import pytest
 
 from aceapi_v2_client.auth import authenticated_client
+from aceapi_v2_client.api.alerts import (
+    export_alerts_ndjson_alerts_export_ndjson_get,
+    list_alerts_alerts_get,
+)
 from aceapi_v2_client.api.health import ping_health_ping_get
 from aceapi_v2_client.api.common import ping_common_ping_get
 from aceapi_v2_client.api.crashes import list_crash_reports_crashes_get
@@ -46,7 +50,7 @@ from aceapi_v2_client.api.users import (
 from aceapi_v2_client.models import (
     AlertSearchRequest,
     ExportFormat,
-    FilterEntry,
+    FilterEntryBase,
     LookupPair,
     ObservableLookupRequest,
     SavedFilterCreate,
@@ -159,6 +163,25 @@ def test_list_yara_qa_signatures(client):
     assert isinstance(response.parsed.data, list)
 
 
+def test_list_alerts(client):
+    # a keyset page of flat alert rows; an empty instance still answers 200
+    response = list_alerts_alerts_get.sync_detailed(client=client, limit=5)
+    assert response.status_code == 200
+    assert response.parsed is not None
+    assert isinstance(response.parsed.data, list)
+
+
+def test_export_alerts_ndjson_returns_bytes(client):
+    # ndjson is mapped onto octet-stream in the generator config, so the body
+    # comes back as raw bytes. None here means the generator dropped the
+    # response (see content_type_overrides).
+    response = export_alerts_ndjson_alerts_export_ndjson_get.sync_detailed(
+        client=client, f=["alert_date:-1d"]
+    )
+    assert response.status_code == 200
+    assert isinstance(response.parsed, bytes)
+
+
 def test_export_events_returns_text(client):
     # /events/export serves text/csv, not json. the generated client parses it
     # into a str -- if this ever comes back as None, the generator has dropped
@@ -176,7 +199,7 @@ def test_saved_filter_round_trip(client):
         client=client,
         body=SavedFilterCreate(
             name="aceapi-v2-client smoke test",
-            filters=[FilterEntry(name="Disposition", values=["DELIVERY"])],
+            filters=[FilterEntryBase(name="Disposition", values=["DELIVERY"])],
         ),
     )
     assert created.status_code == 201
